@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teaching | Abdullah Al Faisal</title>
+  <style>
+:root{
+  --bgDeep:#07121A;
+  --bgMid:#0B1E2A;
+  --ink:#EAF2F7;
+  --muted:rgba(234,242,247,.72);
+  --line:rgba(234,242,247,.14);
+  --cardA:rgba(15,36,48,.78);
+  --cardB:rgba(15,36,48,.55);
+  --shadow: 0 14px 40px rgba(0,0,0,.35);
+  --radius: 18px;
+  --max: 980px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+
+body{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--ink);
+  line-height:1.6;
+  background:
+    radial-gradient(900px 520px at 18% 18%, rgba(143,227,240,.10), transparent 60%),
+    radial-gradient(900px 520px at 86% 26%, rgba(216,185,138,.10), transparent 60%),
+    radial-gradient(900px 520px at 50% 96%, rgba(138,214,163,.08), transparent 62%),
+    linear-gradient(180deg, var(--bgDeep), var(--bgMid) 65%, #050D13);
+  overflow-x:hidden;
+}
+
+body:before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='600'%3E%3Cdefs%3E%3Cpattern id='p' width='300' height='300' patternUnits='userSpaceOnUse'%3E%3Cpath d='M20 70 C 80 10, 220 10, 280 70' fill='none' stroke='rgba(234,242,247,0.18)' stroke-width='1'/%3E%3Cpath d='M20 120 C 80 60, 220 60, 280 120' fill='none' stroke='rgba(234,242,247,0.12)' stroke-width='1'/%3E%3Cpath d='M20 170 C 80 110, 220 110, 280 170' fill='none' stroke='rgba(234,242,247,0.18)' stroke-width='1'/%3E%3Cpath d='M20 220 C 80 160, 220 160, 280 220' fill='none' stroke='rgba(234,242,247,0.12)' stroke-width='1'/%3E%3Cpath d='M70 20 C 10 80, 10 220, 70 280' fill='none' stroke='rgba(234,242,247,0.10)' stroke-width='1'/%3E%3Cpath d='M120 20 C 60 80, 60 220, 120 280' fill='none' stroke='rgba(234,242,247,0.14)' stroke-width='1'/%3E%3Cpath d='M170 20 C 110 80, 110 220, 170 280' fill='none' stroke='rgba(234,242,247,0.10)' stroke-width='1'/%3E%3Cpath d='M220 20 C 160 80, 160 220, 220 280' fill='none' stroke='rgba(234,242,247,0.14)' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23p)'/%3E%3C/svg%3E");
+  background-size: 900px 600px;
+  mix-blend-mode: overlay;
+}
+
+a{color:inherit}
+a:hover{opacity:.92}
+
+header{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter:saturate(130%) blur(14px);
+  background:rgba(7,18,26,.72);
+  border-bottom:1px solid var(--line);
+}
+.c{max-width:var(--max); margin:0 auto; padding:14px 18px}
+.nav a{
+  margin-right:10px;
+  text-decoration:none;
+  padding:7px 10px;
+  border-radius:12px;
+  border:1px solid rgba(234,242,247,.14);
+  background:rgba(234,242,247,.05);
+  display:inline-block;
+  font-size:.92rem;
+}
+
+.card{
+  border:1px solid rgba(234,242,247,.14);
+  background: linear-gradient(180deg, var(--cardA), var(--cardB));
+  border-radius: var(--radius);
+  padding:16px;
+  box-shadow: var(--shadow);
+}
+h1{margin:8px 0 2px}
+.muted{color:var(--muted)}
+.sep{height:1px;background:rgba(234,242,247,.12);margin:14px 0}
+
+details{
+  border:1px solid rgba(234,242,247,.14);
+  background:rgba(7,18,26,.25);
+  border-radius:14px;
+  padding:10px 12px;
+  margin:10px 0;
+}
+summary{
+  cursor:pointer;
+  font-weight:850;
+  letter-spacing:.15px;
+  list-style:none;
+}
+summary::-webkit-details-marker{display:none}
+
+.blockTitle{font-weight:800;margin:0 0 6px}
+p{margin:8px 0}
+ul{margin:8px 0 10px; padding-left:18px}
+li{margin:6px 0}
+
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="c nav">
+    <a href="index.html">Home</a>
+    <a href="teaching.html">Teaching</a>
+    <a href="research.html">Research</a>
+    <a href="publication.html">Publication</a>
+    <a href="leadership.html">Leadership</a>
+  </div>
+</header>
+
+<main class="c">
+  <div class="card">
+    <h1>Teaching</h1>
+    <div class="muted">Department of Earth and Planetary Sciences, McGill University</div>
+    <div class="sep"></div>
+
+    <details open>
+      <summary>ATOC/EPSC 185 Natural Disasters (Fall 2022, 2025)</summary>
+      <p><span class="blockTitle">Responsibilities:</span> Led a group of 40+ undergraduate students through the full process of producing a manuscript-style research/review paper. Guided them in formulating research questions, understanding research ethics, structuring arguments, and applying proper academic formatting and referencing. Held office hours, supported topic selection and project development, and contributed to discussions outside of class.</p>
+    </details>
+
+    <details>
+      <summary>EPSC 181 Environmental Geology (Winter 2023)</summary>
+      <p><span class="blockTitle">Responsibilities:</span> Graded and supported analytical and project-based assignments on human activity, energy use, mobility, material extraction, and global land surface estimation. Provided feedback on student work involving time-use and energy accounting, land-cover classification, and uncertainty estimation related to global material and energy flows. Assisted ~ 40 students in connecting everyday human behaviors to large-scale Earth system processes and supporting their quantitative reasoning.</p>
+    </details>
+
+    <details>
+      <summary>ESYS104 The Earth System (Winter 2024, Winter 2026-offered)</summary>
+      <p><span class="blockTitle">Responsibilities:</span> Supported inquiry-based assignments on climate dynamics, global change, and human–Earth system interactions. Guided 30+ students through fundamental Earth system concepts including land–ocean thermal contrasts, ice-albedo feedback, radiative forcing, and chaos theory in weather vs. climate prediction. Assisted with quantitative reasoning on exponential population growth, GDP doubling, and global sustainability thresholds. Trained students to use Gapminder tools for analyzing spatiotemporal trends in CO₂ emissions, life expectancy, demographics, and development trajectories. Guided students in calculating and interpreting ecological footprints, linking personal consumption patterns to global resource use, supply chains, and planetary limits.</p>
+    </details>
+
+    <details>
+      <summary>ESYS 200 Earth-System Interactions (Winter 2025)</summary>
+      <p><span class="blockTitle">Responsibilities:</span> Led discussion sessions and academic support for interdisciplinary modules on climate sensitivity, Earth system feedback, energy transitions, freshwater cycles, and global food systems. Guided 15 students through quantitative analysis of paleoclimate climate sensitivity, positive and negative feedback mechanisms, and temporal lags in climate response. Supported applied assignments on fossil fuel vs. natural gas emissions, renewable energy systems modeling, energy storage requirements, and net-zero transitions, including critical evaluation of model biases. Facilitated systems-level analysis of global freshwater fluxes, water stress indices, reservoir-induced greenhouse gas emissions, and human impacts on the hydrological cycle. Mentored students in food–energy–water nexus topics, including supply chain emissions, agricultural energy use, and socio-environmental trade-offs in local vs. global food systems.</p>
+    </details>
+
+  </div>
+</main>
+</body>
+</html>

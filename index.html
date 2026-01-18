@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en" id="top">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abdullah Al Faisal | Geospatial Data Scientist</title>
+  <meta name="description" content="Abdullah Al Faisal | Geospatial Data Scientist | Applied AI for Environmental, Energy, and Infrastructure Systems" />
+
+  <style>
+:root{
+  --bgDeep:#07121A;     /* deep ocean */
+  --bgMid:#0B1E2A;      /* shelf */
+  --card:#0F2430;       /* basalt */
+  --card2:#122C3A;
+  --ink:#EAF2F7;        /* glacier */
+  --muted:rgba(234,242,247,.72);
+  --line:rgba(234,242,247,.14);
+  --sand:#D8B98A;       /* sandstone accent */
+  --ice:#8FE3F0;        /* glacier accent */
+  --leaf:#8AD6A3;       /* biosphere accent */
+  --shadow: 0 14px 40px rgba(0,0,0,.35);
+  --max: 1140px;
+  --radius: 18px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+
+body{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--ink);
+  line-height:1.55;
+  background:
+    radial-gradient(900px 520px at 18% 18%, rgba(143,227,240,.10), transparent 60%),
+    radial-gradient(900px 520px at 86% 26%, rgba(216,185,138,.10), transparent 60%),
+    radial-gradient(900px 520px at 50% 96%, rgba(138,214,163,.08), transparent 62%),
+    linear-gradient(180deg, var(--bgDeep), var(--bgMid) 65%, #050D13);
+  overflow-x:hidden;
+}
+
+/* Topographic contour overlay */
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='600'%3E%3Cdefs%3E%3Cpattern id='p' width='300' height='300' patternUnits='userSpaceOnUse'%3E%3Cpath d='M20 70 C 80 10, 220 10, 280 70' fill='none' stroke='rgba(234,242,247,0.18)' stroke-width='1'/%3E%3Cpath d='M20 120 C 80 60, 220 60, 280 120' fill='none' stroke='rgba(234,242,247,0.12)' stroke-width='1'/%3E%3Cpath d='M20 170 C 80 110, 220 110, 280 170' fill='none' stroke='rgba(234,242,247,0.18)' stroke-width='1'/%3E%3Cpath d='M20 220 C 80 160, 220 160, 280 220' fill='none' stroke='rgba(234,242,247,0.12)' stroke-width='1'/%3E%3Cpath d='M70 20 C 10 80, 10 220, 70 280' fill='none' stroke='rgba(234,242,247,0.10)' stroke-width='1'/%3E%3Cpath d='M120 20 C 60 80, 60 220, 120 280' fill='none' stroke='rgba(234,242,247,0.14)' stroke-width='1'/%3E%3Cpath d='M170 20 C 110 80, 110 220, 170 280' fill='none' stroke='rgba(234,242,247,0.10)' stroke-width='1'/%3E%3Cpath d='M220 20 C 160 80, 160 220, 220 280' fill='none' stroke='rgba(234,242,247,0.14)' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23p)'/%3E%3C/svg%3E");
+  background-size: 900px 600px;
+  mix-blend-mode: overlay;
+}
+
+/* Lat/Lon graticule hints */
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.16;
+  background-image:
+    linear-gradient(to right, rgba(234,242,247,.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(234,242,247,.12) 1px, transparent 1px);
+  background-size: 120px 120px;
+  mask-image: radial-gradient(closest-side at 50% 30%, black 0%, transparent 70%);
+}
+
+a{color:inherit}
+a:hover{opacity:.92}
+.container{max-width:var(--max); margin:0 auto; padding:0 18px}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  backdrop-filter:saturate(130%) blur(14px);
+  background:rgba(7,18,26,.72);
+  border-bottom:1px solid var(--line);
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 0;
+  gap:14px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:230px;
+}
+.badgeMark{
+  width:36px;height:36px;border-radius:12px;
+  background:
+    radial-gradient(12px 12px at 28% 32%, rgba(143,227,240,.95), rgba(143,227,240,.18) 60%, transparent 70%),
+    radial-gradient(12px 12px at 72% 70%, rgba(216,185,138,.95), rgba(216,185,138,.14) 60%, transparent 70%),
+    linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+  border:1px solid rgba(234,242,247,.16);
+  box-shadow: 0 10px 26px rgba(0,0,0,.35);
+}
+.brandText{display:flex;flex-direction:column}
+.brandText strong{font-size:.98rem; letter-spacing:.2px}
+.brandText span{font-size:.84rem; color:var(--muted)}
+
+.menu{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:flex-end;
+}
+.menu a{
+  text-decoration:none;
+  font-size:.92rem;
+  padding:8px 10px;
+  border-radius:12px;
+  border:1px solid transparent;
+  color:rgba(234,242,247,.92);
+}
+.menu a:hover{
+  border-color:rgba(234,242,247,.16);
+  background:rgba(234,242,247,.05);
+}
+
+.hero{padding:42px 0 12px}
+.heroGrid{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:18px;
+}
+@media (max-width: 980px){
+  .heroGrid{grid-template-columns:1fr}
+  .brand{min-width:auto}
+}
+
+.card{
+  background: linear-gradient(180deg, rgba(15,36,48,.78), rgba(15,36,48,.55));
+  border:1px solid rgba(234,242,247,.14);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.heroCard{
+  padding:22px;
+  position:relative;
+  overflow:hidden;
+}
+.heroCard:before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:
+    radial-gradient(700px 280px at 25% 0%, rgba(143,227,240,.16), transparent 62%),
+    radial-gradient(600px 320px at 85% 20%, rgba(216,185,138,.14), transparent 60%),
+    radial-gradient(900px 500px at 50% 110%, rgba(138,214,163,.10), transparent 58%);
+  pointer-events:none;
+}
+.heroCard > *{position:relative}
+
+h1{margin:0 0 8px; font-size:2.05rem; letter-spacing:.2px}
+.tagline{font-size:1.06rem; color:rgba(234,242,247,.94)}
+.subline{margin-top:6px; color:var(--muted); font-size:.98rem}
+
+.actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  text-decoration:none;
+  border:1px solid rgba(234,242,247,.16);
+  background:rgba(234,242,247,.05);
+  font-size:.94rem;
+  transition: transform .12s ease, background .12s ease;
+}
+.btn:hover{transform: translateY(-1px); background:rgba(234,242,247,.07)}
+.btn:active{transform: translateY(0)}
+
+.btn.primary{
+  border-color: rgba(143,227,240,.30);
+  background: linear-gradient(180deg, rgba(143,227,240,.14), rgba(234,242,247,.04));
+}
+.btn.secondary{
+  border-color: rgba(216,185,138,.28);
+  background: linear-gradient(180deg, rgba(216,185,138,.14), rgba(234,242,247,.04));
+}
+.ico{
+  width:16px;height:16px; border-radius:6px;
+  background: linear-gradient(135deg, var(--ice), var(--sand));
+  opacity:.95;
+}
+
+.sideCard{padding:18px}
+
+.kpi{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:4px;
+}
+.kpiBox{
+  padding:12px;
+  border-radius:14px;
+  background:rgba(7,18,26,.35);
+  border:1px solid rgba(234,242,247,.12);
+}
+.kpiBox strong{display:block; font-size:1.05rem}
+.kpiBox span{display:block; color:var(--muted); font-size:.9rem; margin-top:2px}
+
+.pills{margin-top:10px; display:flex; flex-wrap:wrap; gap:8px}
+.pill{
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(234,242,247,.14);
+  background:rgba(7,18,26,.28);
+  font-size:.86rem;
+  color:rgba(234,242,247,.90);
+}
+
+main{padding: 8px 0 70px}
+.section{margin-top:16px}
+.sectionCard{padding:18px}
+
+.sectionTitle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 10px;
+}
+.sectionTitle h2{
+  margin:0;
+  font-size:1.12rem;
+  letter-spacing:.2px;
+}
+.sectionTitle .hint{
+  color:var(--muted);
+  font-size:.92rem;
+}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+@media (max-width: 980px){ .grid2{grid-template-columns:1fr} }
+
+.small{color:var(--muted); font-size:.95rem}
+
+details{
+  border:1px solid rgba(234,242,247,.14);
+  background:rgba(7,18,26,.25);
+  border-radius:14px;
+  padding:10px 12px;
+  margin:10px 0;
+}
+summary{
+  cursor:pointer;
+  font-weight:800;
+  letter-spacing:.15px;
+  list-style:none;
+}
+summary::-webkit-details-marker{display:none}
+
+ul{margin:10px 0 12px; padding-left: 18px}
+li{margin:6px 0}
+
+.reveal{
+  opacity:0;
+  transform: translateY(10px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+.reveal.on{opacity:1; transform: translateY(0)}
+
+.footer{
+  margin-top:16px;
+  padding-top:14px;
+  color:rgba(234,242,247,.62);
+  font-size:.92rem;
+  border-top:1px solid rgba(234,242,247,.12);
+}
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <div class="badgeMark" aria-hidden="true"></div>
+          <div class="brandText">
+            <strong>Abdullah Al Faisal</strong>
+            <span>Geospatial Data Scientist</span>
+          </div>
+        </div>
+
+        <nav class="menu" aria-label="Site navigation">
+          <a href="index.html">Home</a>
+          <a href="teaching.html">Teaching</a>
+          <a href="research.html">Research</a>
+          <a href="publication.html">Publication</a>
+          <a href="leadership.html">Leadership</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="container">
+      <div class="heroGrid">
+        <section class="card heroCard" aria-label="Intro">
+          <h1>Abdullah Al Faisal</h1>
+          <div style="flex:1;min-width:260px">
+          <img src="assets/files/photo.png"
+               alt="Abdullah Al Faisal"
+               style="
+                 width:160px;
+                 border-radius:18px;
+                 border:1px solid rgba(234,242,247,.18);
+                 box-shadow:0 10px 30px rgba(0,0,0,.35)
+               ">
+        </div> 
+          
+          <div class="tagline">Geospatial Data Scientist | Applied AI for Environmental, Energy, and Infrastructure Systems</div>
+          <div class="subline">Montreal, QC, Canada (open to relocate)</div>
+          <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">       
+          <div class="actions" aria-label="Contact links">
+            <a class="btn primary" href="mailto:abdullah-al-faisal@localpathways.org"><span class="ico" aria-hidden="true"></span>Email: abdullah-al-faisal@localpathways.org</a>
+            <a class="btn" href="tel:+15144411346"><span class="ico" aria-hidden="true"></span>Phone: +1 (514) 441-1346</a>
+            <a class="btn secondary" href="https://github.com/A2Faisal" target="_blank" rel="noopener"><span class="ico" aria-hidden="true"></span>GitHub: https://github.com/A2Faisal</a>
+            <a class="btn secondary" href="https://scholar.google.com/citations?user=7D1AozIAAAAJ&hl=en" target="_blank" rel="noopener"><span class="ico" aria-hidden="true"></span>Google Scholar</a>
+            <a class="btn secondary" href="https://www.linkedin.com/in/abdullah-al-faisal/" target="_blank" rel="noopener"><span class="ico" aria-hidden="true"></span>LinkedIn</a>
+            <a class="btn" href="assets/files/Resume_Abdullah-Al-Faisal.pdf" target="_blank" rel="noopener"><span class="ico" aria-hidden="true"></span>Download Resume (PDF)</a>
+          </div>
+        </section>
+
+        <aside class="card sideCard" aria-label="Quick facts">
+          <div class="kpi">
+            <div class="kpiBox"><strong>7+ years</strong><span>GIS / RS / ML</span></div>
+            <div class="kpiBox"><strong>220+ countries</strong><span>gridded datasets</span></div>
+            <div class="kpiBox"><strong>250+ variables</strong><span>spatiotemporal pipeline</span></div>
+            <div class="kpiBox"><strong>200+ trained</strong><span>students/collaborators</span></div>
+          </div>
+
+          <div class="pills" aria-label="Focus pills">
+            <span class="pill">Earth system data</span>
+            <span class="pill">Geospatial AI</span>
+            <span class="pill">Energy & material flows</span>
+            <span class="pill">Climate risk</span>
+            <span class="pill">Humanitarian GIS</span>
+            <span class="pill">Reproducibility</span>
+          </div>
+
+          <details open>
+            <summary>Detailed sections (separate pages)</summary>
+            <ul>
+              <li><a href="teaching.html">Teaching</a></li>
+              <li><a href="research.html">Research</a></li>
+              <li><a href="publication.html">Publication</a></li>
+              <li><a href="leadership.html">Leadership</a></li>
+            </ul>
+          </details>
+
+          <div class="small">Short CV lives here. Full CV content goes on the separate pages.</div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <section class="section reveal">
+      <div class="card sectionCard">
+        <div class="sectionTitle">
+          <h2>PROFESSIONAL SUMMARY</h2>
+        </div>
+        <p>Geospatial Data Scientist and Environmental Systems Analyst with over 7 years of experience applying geographic information system (GIS), remote sensing (RS), Python, and machine learning (ML) to climate, energy, and infrastructure challenges. Proven ability to design AI-enabled spatial models, develop reproducible data pipelines, and deliver decision-ready analytics for government agencies, humanitarian organizations, and international partners. Experienced in leading geospatial systems, training teams, and translating complex datasets into actionable insights for policy, planning, and operational use.</p>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="card sectionCard">
+        <div class="sectionTitle">
+          <h2>CORE COMPETENCIES</h2>
+        </div>
+        <div class="grid2">
+          <ul>
+            <li>Applied Machine Learning</li>
+            <li>Predictive Modeling and Forecasting</li>
+            <li>Geospatial AI and Spatial Analytics</li>
+            <li>Python Data Science</li>
+            <li>Energy and Material Flow Modeling</li>
+          </ul>
+          <ul>
+            <li>Climate and Environmental Risk Analysis</li>
+            <li>Spatial Statistics and Data Integration</li>
+            <li>Model Validation and Reproducibility</li>
+            <li>Decision Support and Reporting</li>
+            <li>Stakeholder Coord. &amp; Capacity Building</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="card sectionCard">
+        <div class="sectionTitle">
+          <h2>PROFESSIONAL EXPERIENCE</h2>
+          <div class="hint">Expand roles to read bullet points</div>
+        </div>
+
+        <details open>
+          <summary>Geospatial Data Scientist &amp; Teaching Assistant (September 2022 – Present)</summary>
+          <div class="small">Department of Earth and Planetary Sciences, McGill University<br/>Integrated Earth System Dynamics Lab, McGill University and ICTA UAB.</div>
+          <ul>
+            <li>Designed AI-enabled spatial models for forecasting and gap-filling in global energy and material flow datasets, improving data completeness by over 30 percent.</li>
+            <li>Built an open-source Python package to generate and manage spatiotemporal datasets across 250+ human and Earth system variables at grid-level resolution for 220+ countries, integrating satellite imagery, census, and socioeconomic data to enable large-scale environmental, climate, and human-Earth system analysis.</li>
+            <li>Developed gravity-based and network models linking resource extraction to end-use sectors for energy and material systems.</li>
+            <li>Applied ML gap filling and predicted modeling using with cross-validation and error metrics.</li>
+            <li>Mentored and trained 120+ students and collaborators in quantitative analysis, environmental systems, and climate hazards while delivering reproducible analytical pipelines used by international applied research teams.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>GIS Specialist (July 2020 – August 2021)</summary>
+          <div class="small">GIS Centre, Médecins Sans Frontières (MSF)/Doctors Without Borders</div>
+          <ul>
+            <li>Led mission-level GIS systems as the technical focal point, supporting humanitarian medical response across water and sanitation, logistics, security, outreach, and coordination functions in Rohingya refugee camps.</li>
+            <li>Coordinated, trained, and supervised GIS, WatSan &amp; outreach field teams, including leading of a 20+ member refugee data collection team, enabling camp-level infrastructure and health data capture.</li>
+            <li>Designed and deployed geospatial data collection systems through operational dashboards using Kobo Toolbox, ArcGIS Survey123, Collector, Enterprise, and AGOL.</li>
+            <li>Managed and analyzed geospatial data for water networks, operation &amp; maintenance, fecal sludge management, and hygiene promotion, producing decision-ready maps and analyses.</li>
+            <li>Coordinated geospatial activities with local authorities and international partners including UNICEF, IOM, UNHCR, and NGOs.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Research Consultant (May 2019 – July 2020)</summary>
+          <div class="small">Climate Change and Disaster Management &amp; RS Division (Ministry of Water Resources)<br/>Center for Environmental and Geographic Information and Services (CEGIS)</div>
+          <ul>
+            <li>Managed GIS and remote sensing activities across 10+ national and international climate change (CC) and water management projects, including but not limited to: CC forecasting &amp; participatory scenario development, sea level rise in coastal region, CC risk assessment in roads and low-lying flood potential region, preparation of storm water management plan for Thimphu, Bhutan, among others.</li>
+            <li>Developed watershed and urban drainage models using ArcSWAT, ArcHydro, and SWMM, including DEM-based drainage connectivity, catchment delineation, slope, elevation, and discharge analysis.</li>
+            <li>Conducted flood risk, inundation, storm water management, and road vulnerability analyses, including coastal crop damage assessment.</li>
+            <li>Performed land use and land cover classification, impervious surface estimation, and DEM analysis from satellite imagery.</li>
+            <li>Applied multi-criteria analysis to identify critical drainage zones and priority infrastructure interventions.</li>
+            <li>Led field surveys, data verification, cadastral map digitization, and spatial data integration, coordinating with national and international government agencies.</li>
+            <li>Prepared technical reports, maps, and presentations, revising deliverables based on client and stakeholder feedback.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="card sectionCard">
+        <div class="sectionTitle">
+          <h2>TECHNICAL SKILLS</h2>
+          <div class="hint">Expand categories</div>
+        </div>
+
+        <details open>
+          <summary>Programming</summary>
+          <p>• Programming: Python, R, Google Earth Engine (JavaScript), ENVI IDL</p>
+        </details>
+
+        <details>
+          <summary>AI / ML &amp; Modeling</summary>
+          <p>• AI / ML &amp; Modeling: machine learning, deep learning, predictive modeling, regression and tree-based models, neural networks, network and gravity models, material and energy flow models, statistical modeling</p>
+        </details>
+
+        <details>
+          <summary>Geospatial AI &amp; Analysis</summary>
+          <p>• Geospatial AI &amp; Analysis: GeoAI, geospatial big data, spatial feature engineering, DEM analysis, land use and land cover classification, LiDAR, photogrammetry, UAV, Web GIS</p>
+        </details>
+
+        <details>
+          <summary>GIS Platforms</summary>
+          <p>• GIS Platforms: ArcGIS Pro, ArcGIS Enterprise, ArcGIS Online (AGOL), QGIS, ERDAS Imagine, ENVI, SNAP</p>
+        </details>
+
+        <details>
+          <summary>Libraries &amp; Tools</summary>
+          <p>• Libraries &amp; Tools: GeoPandas, pandas, NumPy, xarray, rasterio, GDAL, arcpy, scikit-learn, TensorFlow, PyTorch, PyCaret, networkx</p>
+        </details>
+
+        <details>
+          <summary>Field &amp; Surveys</summary>
+          <p>• Field &amp; Surveys: Survey123, Kobo Toolbox, ArcGIS Collector</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="card sectionCard">
+        <div class="sectionTitle"><h2>EDUCATION</h2></div>
+        <ul>
+          <li>PhD in Earth and Planetary Sciences (expected by August 2026), McGill University, Canada</li>
+          <li>MSc in Applied GIS and Remote Sensing, University of Southampton, United Kingdom</li>
+          <li>Bachelor of Urban &amp; Regional Planning, Rajshahi University of Engineering &amp; Technology, BD</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="card sectionCard">
+        <div class="sectionTitle"><h2>HONORS, AWARDS AND IMPACT</h2></div>
+        <ul>
+          <li>Vanier Canada Graduate Scholarship by NSERC; Commonwealth Shared Scholarship (UK); UN SDSN Local Pathways Fellow (2020).</li>
+          <li>Competitive fellowships and research awards totaling CAD 235,000+; Research outputs cited 2,500+ times across academic and applied domains.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="card sectionCard">
+        <div class="sectionTitle"><h2>WORK AUTHORIZATION</h2></div>
+        <ul>
+          <li>Authorized to work in Canada, Available for full time, contract, and consulting roles.</li>
+          <li>Class 5 Driving License</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:10px">
+        <a class="btn" href="teaching.html"><span class="ico" aria-hidden="true"></span>Teaching</a>
+        <a class="btn" href="research.html"><span class="ico" aria-hidden="true"></span>Research</a>
+        <a class="btn" href="publication.html"><span class="ico" aria-hidden="true"></span>Publication</a>
+        <a class="btn" href="leadership.html"><span class="ico" aria-hidden="true"></span>Leadership</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const els = Array.from(document.querySelectorAll('.reveal'));
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) e.target.classList.add('on');
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
